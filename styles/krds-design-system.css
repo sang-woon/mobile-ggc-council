@@ -1,0 +1,537 @@
+/* ===================================================
+   KRDS (대한민국 디자인 시스템) 적용
+   Korean Government Design System
+   버전: 1.0.0
+   최종 수정: 2025-01-24
+   =================================================== */
+
+/* ===================================================
+   1. KRDS 색상 체계
+   =================================================== */
+:root {
+    /* Primary Colors - 정부 표준 색상 */
+    --krds-primary: #0033A0;
+    --krds-primary-dark: #002776;
+    --krds-primary-light: #1a4fb3;
+
+    /* Secondary Colors - 경기도 색상 */
+    --krds-secondary: #003d7a;
+    --krds-secondary-dark: #002a5c;
+    --krds-secondary-light: #0056b3;
+
+    /* Accent Colors */
+    --krds-accent: #3b82f6;
+    --krds-accent-light: #60a5fa;
+
+    /* Semantic Colors */
+    --krds-success: #0f9d58;
+    --krds-success-light: #34a853;
+    --krds-warning: #f9ab00;
+    --krds-warning-light: #fbbc04;
+    --krds-error: #d93025;
+    --krds-error-light: #ea4335;
+    --krds-info: #1a73e8;
+    --krds-info-light: #4285f4;
+
+    /* Grayscale */
+    --krds-gray-50: #f8f9fa;
+    --krds-gray-100: #f1f3f4;
+    --krds-gray-200: #e8eaed;
+    --krds-gray-300: #dadce0;
+    --krds-gray-400: #bdc1c6;
+    --krds-gray-500: #9aa0a6;
+    --krds-gray-600: #80868b;
+    --krds-gray-700: #5f6368;
+    --krds-gray-800: #3c4043;
+    --krds-gray-900: #202124;
+
+    /* Background Colors */
+    --krds-bg-primary: #ffffff;
+    --krds-bg-secondary: #f8f9fa;
+    --krds-bg-tertiary: #f1f3f4;
+
+    /* Text Colors */
+    --krds-text-primary: #202124;
+    --krds-text-secondary: #5f6368;
+    --krds-text-tertiary: #80868b;
+    --krds-text-disabled: #bdc1c6;
+
+    /* Border Colors */
+    --krds-border-light: #e8eaed;
+    --krds-border-medium: #dadce0;
+    --krds-border-dark: #bdc1c6;
+
+    /* Shadow */
+    --krds-shadow-sm: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    --krds-shadow-md: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+    --krds-shadow-lg: 0 2px 6px 2px rgba(60, 64, 67, 0.15), 0 8px 24px 4px rgba(60, 64, 67, 0.15);
+    --krds-shadow-xl: 0 4px 16px 6px rgba(60, 64, 67, 0.15), 0 16px 32px 8px rgba(60, 64, 67, 0.15);
+}
+
+/* ===================================================
+   2. KRDS 타이포그래피
+   =================================================== */
+.krds-text {
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+    line-height: 1.6;
+    letter-spacing: -0.02em;
+    word-break: keep-all;
+}
+
+/* Heading Styles */
+.krds-h1 {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--krds-text-primary);
+}
+
+.krds-h2 {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--krds-text-primary);
+}
+
+.krds-h3 {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--krds-text-primary);
+}
+
+.krds-h4 {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--krds-text-primary);
+}
+
+.krds-h5 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--krds-text-primary);
+}
+
+/* Body Text */
+.krds-body-large {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--krds-text-primary);
+}
+
+.krds-body {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--krds-text-primary);
+}
+
+.krds-body-small {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--krds-text-secondary);
+}
+
+/* Caption */
+.krds-caption {
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--krds-text-tertiary);
+}
+
+/* ===================================================
+   3. KRDS 버튼
+   =================================================== */
+.krds-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    min-width: 88px;
+    padding: 10px 24px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: center;
+    white-space: nowrap;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.krds-btn:focus {
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--krds-primary);
+}
+
+/* Primary Button */
+.krds-btn-primary {
+    background: var(--krds-primary);
+    color: #ffffff;
+    box-shadow: var(--krds-shadow-sm);
+}
+
+.krds-btn-primary:hover {
+    background: var(--krds-primary-dark);
+    box-shadow: var(--krds-shadow-md);
+}
+
+.krds-btn-primary:active {
+    background: var(--krds-primary-dark);
+    transform: translateY(1px);
+    box-shadow: var(--krds-shadow-sm);
+}
+
+.krds-btn-primary:disabled {
+    background: var(--krds-gray-200);
+    color: var(--krds-text-disabled);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Secondary Button */
+.krds-btn-secondary {
+    background: var(--krds-secondary);
+    color: #ffffff;
+    box-shadow: var(--krds-shadow-sm);
+}
+
+.krds-btn-secondary:hover {
+    background: var(--krds-secondary-dark);
+    box-shadow: var(--krds-shadow-md);
+}
+
+/* Outlined Button */
+.krds-btn-outlined {
+    background: transparent;
+    color: var(--krds-primary);
+    border: 2px solid var(--krds-primary);
+    box-shadow: none;
+}
+
+.krds-btn-outlined:hover {
+    background: rgba(0, 51, 160, 0.04);
+}
+
+/* Text Button */
+.krds-btn-text {
+    background: transparent;
+    color: var(--krds-primary);
+    box-shadow: none;
+    min-width: auto;
+}
+
+.krds-btn-text:hover {
+    background: rgba(0, 51, 160, 0.08);
+}
+
+/* Button Sizes */
+.krds-btn-large {
+    min-height: 52px;
+    padding: 14px 32px;
+    font-size: 16px;
+}
+
+.krds-btn-small {
+    min-height: 36px;
+    padding: 6px 16px;
+    font-size: 13px;
+}
+
+/* ===================================================
+   4. KRDS 카드
+   =================================================== */
+.krds-card {
+    background: var(--krds-bg-primary);
+    border: 1px solid var(--krds-border-light);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--krds-shadow-sm);
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.krds-card:hover {
+    box-shadow: var(--krds-shadow-md);
+}
+
+.krds-card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--krds-text-primary);
+    margin-bottom: 12px;
+}
+
+.krds-card-content {
+    font-size: 14px;
+    color: var(--krds-text-secondary);
+    line-height: 1.6;
+}
+
+/* ===================================================
+   5. KRDS 입력 필드
+   =================================================== */
+.krds-input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 16px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--krds-text-primary);
+    background: var(--krds-bg-primary);
+    border: 1px solid var(--krds-border-medium);
+    border-radius: 4px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+}
+
+.krds-input:hover {
+    border-color: var(--krds-border-dark);
+}
+
+.krds-input:focus {
+    border-color: var(--krds-primary);
+    box-shadow: 0 0 0 2px rgba(0, 51, 160, 0.1);
+}
+
+.krds-input:disabled {
+    background: var(--krds-bg-tertiary);
+    color: var(--krds-text-disabled);
+    cursor: not-allowed;
+}
+
+.krds-input::placeholder {
+    color: var(--krds-text-tertiary);
+}
+
+/* Input with Label */
+.krds-form-group {
+    margin-bottom: 20px;
+}
+
+.krds-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--krds-text-primary);
+    margin-bottom: 8px;
+}
+
+.krds-label-required::after {
+    content: '*';
+    color: var(--krds-error);
+    margin-left: 4px;
+}
+
+.krds-helper-text {
+    display: block;
+    font-size: 12px;
+    color: var(--krds-text-secondary);
+    margin-top: 4px;
+}
+
+.krds-error-text {
+    display: block;
+    font-size: 12px;
+    color: var(--krds-error);
+    margin-top: 4px;
+}
+
+/* ===================================================
+   6. KRDS 배지
+   =================================================== */
+.krds-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.krds-badge-primary {
+    background: rgba(0, 51, 160, 0.1);
+    color: var(--krds-primary);
+}
+
+.krds-badge-success {
+    background: rgba(15, 157, 88, 0.1);
+    color: var(--krds-success);
+}
+
+.krds-badge-warning {
+    background: rgba(249, 171, 0, 0.1);
+    color: var(--krds-warning);
+}
+
+.krds-badge-error {
+    background: rgba(217, 48, 37, 0.1);
+    color: var(--krds-error);
+}
+
+.krds-badge-info {
+    background: rgba(26, 115, 232, 0.1);
+    color: var(--krds-info);
+}
+
+/* ===================================================
+   7. KRDS 알림
+   =================================================== */
+.krds-alert {
+    display: flex;
+    align-items: flex-start;
+    padding: 16px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.krds-alert-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+}
+
+.krds-alert-info {
+    background: rgba(26, 115, 232, 0.1);
+    color: var(--krds-info);
+    border-left: 4px solid var(--krds-info);
+}
+
+.krds-alert-success {
+    background: rgba(15, 157, 88, 0.1);
+    color: var(--krds-success);
+    border-left: 4px solid var(--krds-success);
+}
+
+.krds-alert-warning {
+    background: rgba(249, 171, 0, 0.1);
+    color: var(--krds-warning);
+    border-left: 4px solid var(--krds-warning);
+}
+
+.krds-alert-error {
+    background: rgba(217, 48, 37, 0.1);
+    color: var(--krds-error);
+    border-left: 4px solid var(--krds-error);
+}
+
+/* ===================================================
+   8. KRDS 테이블
+   =================================================== */
+.krds-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.krds-table th {
+    background: var(--krds-bg-secondary);
+    color: var(--krds-text-primary);
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--krds-border-medium);
+}
+
+.krds-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--krds-border-light);
+    color: var(--krds-text-secondary);
+}
+
+.krds-table tr:hover {
+    background: var(--krds-bg-secondary);
+}
+
+/* ===================================================
+   9. KRDS 접근성
+   =================================================== */
+.krds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Skip to Content */
+.krds-skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--krds-primary);
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    z-index: 100;
+}
+
+.krds-skip-link:focus {
+    top: 0;
+}
+
+/* Focus Visible */
+.krds-focus-visible:focus-visible {
+    outline: 2px solid var(--krds-primary);
+    outline-offset: 2px;
+}
+
+/* ===================================================
+   10. KRDS 반응형
+   =================================================== */
+@media (max-width: 768px) {
+    .krds-h1 { font-size: 28px; }
+    .krds-h2 { font-size: 22px; }
+    .krds-h3 { font-size: 18px; }
+    .krds-h4 { font-size: 16px; }
+
+    .krds-card {
+        padding: 16px;
+    }
+
+    .krds-btn {
+        width: 100%;
+    }
+}
+
+/* ===================================================
+   11. KRDS 유틸리티
+   =================================================== */
+.krds-spacing-xs { margin-bottom: 4px; }
+.krds-spacing-sm { margin-bottom: 8px; }
+.krds-spacing-md { margin-bottom: 16px; }
+.krds-spacing-lg { margin-bottom: 24px; }
+.krds-spacing-xl { margin-bottom: 32px; }
+
+.krds-text-center { text-align: center; }
+.krds-text-right { text-align: right; }
+.krds-text-left { text-align: left; }
+
+.krds-fw-normal { font-weight: 400; }
+.krds-fw-medium { font-weight: 500; }
+.krds-fw-semibold { font-weight: 600; }
+.krds-fw-bold { font-weight: 700; }
