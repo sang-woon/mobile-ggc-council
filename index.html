@@ -76,7 +76,6 @@
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="flex items-center">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50'%3E%3Ccircle cx='25' cy='25' r='20' fill='%23fff'/%3E%3C/svg%3E" alt="국회 로고" class="w-8 h-8 mr-2">
                     <h1 class="text-base font-medium">경기도의회 모바일 의정 지원 서비스</h1>
                 </div>
                 <button id="notificationBtn" class="relative text-xl p-2" onclick="window.app.showNotifications()">
@@ -698,40 +697,40 @@
                 <div class="gov-card">
                     <h4 class="font-semibold mb-3">최근 출석 내역</h4>
                     <div class="attendance-list">
-                        <div class="attendance-item" onclick="AttendanceCalendar.showDayDetail('2025-01-17')" style="cursor: pointer;">
+                        <div class="attendance-item" onclick="app.showAttendanceDetail('2025-01-17')" style="cursor: pointer;">
                             <div class="attendance-date">2025.01.17</div>
                             <div class="attendance-info">
                                 <div class="attendance-type">교육위원회</div>
-                                <div class="attendance-desc">전체회의</div>
+                                <div class="attendance-desc">예산결산특별위원회</div>
                             </div>
-                            <div class="attendance-status status-present">출석</div>
+                            <div class="attendance-status status-excused">청가</div>
                             <i class="fas fa-chevron-right text-gray-400 ml-2"></i>
                         </div>
-                        <div class="attendance-item" onclick="AttendanceCalendar.showDayDetail('2025-01-16')" style="cursor: pointer;">
+                        <div class="attendance-item" onclick="app.showAttendanceDetail('2025-01-16')" style="cursor: pointer;">
                             <div class="attendance-date">2025.01.16</div>
                             <div class="attendance-info">
                                 <div class="attendance-type">본회의</div>
-                                <div class="attendance-desc">제410회 국회(임시회) 제4차</div>
+                                <div class="attendance-desc">예산결산특별위원회</div>
                             </div>
                             <div class="attendance-status status-present">출석</div>
                             <i class="fas fa-chevron-right text-gray-400 ml-2"></i>
                         </div>
-                        <div class="attendance-item" onclick="AttendanceCalendar.showDayDetail('2025-01-15')" style="cursor: pointer;">
+                        <div class="attendance-item" onclick="app.showAttendanceDetail('2025-01-15')" style="cursor: pointer;">
                             <div class="attendance-date">2025.01.15</div>
                             <div class="attendance-info">
                                 <div class="attendance-type">교육위원회</div>
-                                <div class="attendance-desc">예산결산소위</div>
+                                <div class="attendance-desc">예산결산특별위원회</div>
                             </div>
                             <div class="attendance-status status-present">출석</div>
                             <i class="fas fa-chevron-right text-gray-400 ml-2"></i>
                         </div>
-                        <div class="attendance-item" onclick="AttendanceCalendar.showDayDetail('2025-01-14')" style="cursor: pointer;">
+                        <div class="attendance-item" onclick="app.showAttendanceDetail('2025-01-14')" style="cursor: pointer;">
                             <div class="attendance-date">2025.01.14</div>
                             <div class="attendance-info">
                                 <div class="attendance-type">본회의</div>
-                                <div class="attendance-desc">제410회 국회(임시회) 제3차</div>
+                                <div class="attendance-desc">의원 연수 - 법안 심사 교육</div>
                             </div>
-                            <div class="attendance-status status-absent">청가</div>
+                            <div class="attendance-status status-present">출석</div>
                             <i class="fas fa-chevron-right text-gray-400 ml-2"></i>
                         </div>
                     </div>
@@ -774,6 +773,7 @@
     <!-- <script src="js/attendance-calendar-fixed.js?v=3.0"></script> -->
     <!-- Google Calendar Style JS & CSS -->
     <script src="js/google-calendar.js?v=1.1.0"></script>
+    <script src="js/attendance-detail.js?v=1.0.0"></script>
     <link rel="stylesheet" href="styles/google-calendar-style.css?v=1.0.0">
     <!-- menu-fix.js 비활성화: app-core.js와 충돌 -->
     <!-- <script src="js/menu-fix.js"></script> -->

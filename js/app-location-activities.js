@@ -293,7 +293,7 @@ window.app.exportActivities = function() {
         exportDate: new Date().toISOString(),
         member: (typeof MemberDataManager !== 'undefined' && MemberDataManager.defaultMemberData) ? 
                 MemberDataManager.defaultMemberData : {
-                    name: '김호겸',
+                    name: '김영수',
                     memberId: '2024-0815',
                     party: '국민의힘',
                     district: '수원시 제5선거구'

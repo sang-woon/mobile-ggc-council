@@ -96,95 +96,14 @@ Object.assign(window.app, {
         document.body.style.overflow = '';
     },
     
-    // 출석 상세 모달 (개선된 디자인)
+    // 출석 상세 모달 (개선된 디자인) - attendance-detail.js로 이동됨
     showAttendanceDetailEnhanced: function(date, type, session) {
-        const data = DataManager.attendanceData.history.find(h => 
-            h.date === date && h.type === type
-        ) || {
-            date: date,
-            type: type,
-            session: session,
-            status: 'present',
-            time: '14:00',
-            duration: 120
-        };
-        
-        const statusConfig = {
-            present: { icon: 'fa-check-circle', text: '출석', class: 'status-icon-present' },
-            absent: { icon: 'fa-times-circle', text: '결석', class: 'status-icon-absent' },
-            excused: { icon: 'fa-calendar-times', text: '청가', class: 'status-icon-excused' }
-        };
-        
-        const status = statusConfig[data.status];
-        
-        const content = `
-            <div class="attendance-detail-header">
-                <div class="attendance-status-icon ${status.class}">
-                    <i class="fas ${status.icon}"></i>
-                </div>
-                <div class="attendance-detail-info">
-                    <div class="attendance-detail-title">${data.session}</div>
-                    <div class="attendance-detail-subtitle">${data.type}</div>
-                    <div class="attendance-time-badge">
-                        <i class="far fa-clock"></i>
-                        <span>${data.date} ${data.time}</span>
-                        ${data.duration ? `<span>(${Math.floor(data.duration/60)}시간 ${data.duration%60}분)</span>` : ''}
-                    </div>
-                </div>
-            </div>
-            
-            <div class="attendance-details-grid">
-                <div class="detail-card">
-                    <div class="detail-card-title">
-                        <i class="fas fa-info-circle text-blue-500"></i>
-                        출석 상태
-                    </div>
-                    <div class="detail-card-content">
-                        <strong class="${status.class.replace('status-icon-', 'text-')}">${status.text}</strong>
-                        ${data.reason ? `<p class="mt-2 text-sm text-gray-600">사유: ${data.reason}</p>` : ''}
-                    </div>
-                </div>
-                
-                <div class="detail-card">
-                    <div class="detail-card-title">
-                        <i class="fas fa-list-ul text-purple-500"></i>
-                        주요 안건
-                    </div>
-                    <div class="detail-card-content">
-                        <ul class="agenda-list">
-                            <li class="agenda-item">
-                                <div class="agenda-number">1</div>
-                                <div class="agenda-content">
-                                    <div class="agenda-title">2025년도 본예산안</div>
-                                    <div class="agenda-status">원안가결</div>
-                                </div>
-                            </li>
-                            <li class="agenda-item">
-                                <div class="agenda-number">2</div>
-                                <div class="agenda-content">
-                                    <div class="agenda-title">교육환경 개선 조례안</div>
-                                    <div class="agenda-status">수정가결</div>
-                                </div>
-                            </li>
-                            <li class="agenda-item">
-                                <div class="agenda-number">3</div>
-                                <div class="agenda-content">
-                                    <div class="agenda-title">도정질문</div>
-                                    <div class="agenda-status">진행완료</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        this.showModalEnhanced('attendanceDetail', {
-            title: '출석 상세 정보',
-            icon: 'fas fa-calendar-check',
-            content: content,
-            confirmText: '확인'
-        });
+        // attendance-detail.js의 showAttendanceDetail 함수 사용
+        if (this.showAttendanceDetail) {
+            this.showAttendanceDetail(date);
+        } else {
+            console.error('showAttendanceDetail 함수를 찾을 수 없습니다.');
+        }
     },
     
     // 법안 상세 모달 (개선된 디자인)
