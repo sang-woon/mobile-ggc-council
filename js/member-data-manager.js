@@ -3,7 +3,7 @@ window.MemberDataManager = {
     // 전체 의원 정보 구조
     defaultMemberData: {
         // 기본 정보
-        name: '김호겸',
+        name: '김영수',
         nameHanja: '金浩謙',
         birthYear: '1958',
         memberId: '2024-0815',

@@ -152,7 +152,7 @@ window.LocationCertificate = {
             issueDate: issueDate,
             member: {
                 name: (typeof MemberDataManager !== 'undefined' && MemberDataManager.defaultMemberData) ? 
-                      MemberDataManager.defaultMemberData.name : '김호겸',
+                      MemberDataManager.defaultMemberData.name : '김영수',
                 memberId: (typeof MemberDataManager !== 'undefined' && MemberDataManager.defaultMemberData) ? 
                           MemberDataManager.defaultMemberData.memberId : '2024-0815',
                 party: (typeof MemberDataManager !== 'undefined' && MemberDataManager.defaultMemberData) ? 
