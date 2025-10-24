@@ -248,49 +248,20 @@
         return event.type || 'committee';
     };
     
-    // 이벤트 상세 보기
+    // 이벤트 상세 보기 - attendance-detail.js의 showAttendanceDetail 함수 사용
     window.app.showEventDetail = function(dateStr, eventId) {
-        const events = this.getEventsForDate(dateStr);
-        if (!events || events.length === 0) return;
-        
-        const event = events[0]; // 첫 번째 이벤트 표시
-        const date = new Date(dateStr);
-        const type = this.getEventType(event);
-        const typeInfo = MEETING_TYPES[type];
-        
-        const modalContent = `
-            <div class="gcal-event-detail">
-                <div class="gcal-event-header" style="background: ${typeInfo.color}; color: ${typeInfo.textColor}">
-                    <h3>${event.title}</h3>
-                </div>
-                <div class="gcal-event-body">
-                    <div class="gcal-event-info">
-                        <i class="fas fa-calendar"></i>
-                        <span>${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일</span>
-                    </div>
-                    ${event.time ? `
-                    <div class="gcal-event-info">
-                        <i class="fas fa-clock"></i>
-                        <span>${event.time}</span>
-                    </div>
-                    ` : ''}
-                    <div class="gcal-event-info">
-                        <i class="fas fa-tag"></i>
-                        <span>${typeInfo.name}</span>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        // showModal 함수가 없으면 간단한 alert 사용
-        if (this.showModal) {
-            this.showModal('eventDetail', {
-                title: '일정 상세',
-                content: modalContent,
-                confirmText: '확인'
-            });
+        // 새로운 출석 상세 정보 함수 호출
+        if (this.showAttendanceDetail) {
+            this.showAttendanceDetail(dateStr);
         } else {
-            alert(`${event.title}\n${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일\n${event.time || ''}`);
+            console.error('showAttendanceDetail 함수를 찾을 수 없습니다.');
+            // 폴백: 기본 alert 표시
+            const events = this.getEventsForDate(dateStr);
+            if (events && events.length > 0) {
+                const event = events[0];
+                const date = new Date(dateStr);
+                alert(`${event.title}\n${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일\n${event.time || ''}`);
+            }
         }
     };
     
