@@ -250,23 +250,23 @@ nav ul li {
     }
 }
 
-/* 다크모드 지원 (선택사항) */
-@media (prefers-color-scheme: dark) {
-    .side-menu {
-        background: #1f2937 !important;
-    }
-    
-    .menu-item {
-        color: #f3f4f6 !important;
-        border-bottom-color: #374151 !important;
-    }
-    
-    .menu-item:hover {
-        background: #374151 !important;
-    }
-    
-    .menu-item.active {
-        background: #374151 !important;
-        color: #60a5fa !important;
-    }
+/* 다크모드 지원 비활성화 - 모바일 최적화를 위해 라이트 모드로 고정 */
+/* 항상 밝은 배경에 어두운 텍스트 사용 */
+.side-menu {
+    background: white !important;
+}
+
+.menu-item {
+    color: #374151 !important;
+    background: white !important;
+}
+
+.menu-item:hover {
+    background: #f0f9ff !important;
+    color: #003d7a !important;
+}
+
+.menu-item.active {
+    background: linear-gradient(90deg, #e0f2fe 0%, #f0f9ff 100%) !important;
+    color: #003d7a !important;
 }
