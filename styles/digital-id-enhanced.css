@@ -2,11 +2,18 @@
 /* 모바일 최적화 디지털 신분증 */
 
 :root {
-    --id-gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --id-gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    --id-gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    --id-gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-    --id-gradient-dark: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    /* KRDS Official Colors (Constitution Principle II) */
+    --krds-primary: #003d7a;      /* 경기도의회 메인 */
+    --krds-secondary: #0056b3;    /* 강조 색상 */
+    --krds-background: #f3f4f6;   /* 회색 배경 */
+    --krds-success: #059669;      /* 성공/인증 */
+    --krds-warning: #d97706;      /* 경고 */
+    --krds-error: #dc2626;        /* 오류 */
+
+    /* KRDS Gradient Patterns */
+    --id-gradient-primary: linear-gradient(135deg, #003d7a 0%, #0056b3 100%);
+    --id-gradient-secondary: linear-gradient(135deg, #0056b3 0%, #003d7a 100%);
+    --id-gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
 }
 
 /* ==================== 카드 컨테이너 ==================== */
@@ -14,7 +21,7 @@
 .digital-id-enhanced-container {
     min-height: calc(100vh - 120px);
     padding: 20px;
-    background: linear-gradient(180deg, #f0f4f8 0%, #d9e2ec 100%);
+    background: var(--krds-background);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -61,7 +68,7 @@
 }
 
 .id-card-header-enhanced {
-    background: var(--id-gradient-dark);
+    background: var(--id-gradient-primary);
     padding: 24px;
     position: relative;
     overflow: hidden;
@@ -104,7 +111,7 @@
     align-items: center;
     justify-content: center;
     font-size: 20px;
-    color: var(--primary-blue);
+    color: var(--krds-primary);
 }
 
 .id-org-text {
@@ -168,7 +175,7 @@
     right: -8px;
     width: 36px;
     height: 36px;
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: var(--id-gradient-success);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -216,19 +223,19 @@
 }
 
 .committee-badge-enhanced {
-    background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
-    color: #4338ca;
+    background: rgba(0, 61, 122, 0.1);
+    color: var(--krds-primary);
     padding: 6px 14px;
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
-    border: 1px solid #c7d2fe;
+    border: 1px solid rgba(0, 61, 122, 0.2);
 }
 
 .committee-badge-enhanced.chairman {
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    color: #d97706;
-    border-color: #fde68a;
+    background: rgba(217, 119, 6, 0.1);
+    color: var(--krds-warning);
+    border-color: rgba(217, 119, 6, 0.2);
 }
 
 /* QR 코드 섹션 */
@@ -278,7 +285,7 @@
     align-items: center;
     gap: 6px;
     padding: 4px 10px;
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: var(--id-gradient-success);
     color: white;
     border-radius: 12px;
     font-size: 11px;
@@ -308,7 +315,7 @@
 }
 
 .id-back-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--id-gradient-secondary);
     padding: 20px 24px;
     color: white;
     text-align: center;
@@ -346,13 +353,13 @@
     width: 40px;
     height: 40px;
     margin: 0 auto 8px;
-    background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+    background: rgba(0, 86, 179, 0.1);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 18px;
-    color: #4338ca;
+    color: var(--krds-secondary);
 }
 
 .id-stat-value {
@@ -485,8 +492,8 @@
 }
 
 .action-btn.primary {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    border-color: #2563eb;
+    background: var(--id-gradient-primary);
+    border-color: var(--krds-secondary);
     color: white;
 }
 
@@ -501,13 +508,13 @@
     right: 20px;
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    background: var(--id-gradient-primary);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 61, 122, 0.4);
     transition: all 0.3s;
     z-index: 10;
     color: white;
@@ -518,18 +525,18 @@
 @keyframes pulse-button {
     0%, 100% {
         transform: scale(1);
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        box-shadow: 0 4px 12px rgba(0, 61, 122, 0.4);
     }
     50% {
         transform: scale(1.05);
-        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+        box-shadow: 0 6px 20px rgba(0, 61, 122, 0.6);
     }
 }
 
 .flip-button:hover {
     transform: scale(1.15) rotate(180deg);
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+    background: var(--id-gradient-secondary);
+    box-shadow: 0 6px 20px rgba(0, 86, 179, 0.6);
 }
 
 /* NFC 애니메이션 */
@@ -569,7 +576,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    border: 3px solid #3b82f6;
+    border: 3px solid var(--krds-secondary);
     border-radius: 50%;
     animation: nfc-wave 1.5s ease-out infinite;
 }
@@ -596,8 +603,8 @@
 /* 디지털 서명 */
 .digital-signature {
     padding: 16px 20px;
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    border-top: 1px solid #fbbf24;
+    background: rgba(217, 119, 6, 0.1);
+    border-top: 1px solid rgba(217, 119, 6, 0.3);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -623,7 +630,7 @@
 
 .signature-verify-btn {
     padding: 8px 12px;
-    background: #d97706;
+    background: var(--krds-warning);
     color: white;
     border: none;
     border-radius: 8px;
@@ -636,7 +643,7 @@
 .view-back-button {
     width: 100%;
     padding: 14px 20px;
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: var(--id-gradient-success);
     color: white;
     border: none;
     border-radius: 12px;
@@ -648,14 +655,14 @@
     gap: 12px;
     cursor: pointer;
     margin-bottom: 16px;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
     transition: all 0.3s;
 }
 
 .view-back-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+    background: linear-gradient(135deg, #047857 0%, #065f46 100%);
 }
 
 .view-back-button i:last-child {
@@ -671,7 +678,7 @@
 .view-front-button {
     width: 100%;
     padding: 14px 20px;
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    background: var(--id-gradient-primary);
     color: white;
     border: none;
     border-radius: 12px;
@@ -682,14 +689,14 @@
     justify-content: center;
     gap: 12px;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 61, 122, 0.3);
     transition: all 0.3s;
 }
 
 .view-front-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    box-shadow: 0 6px 20px rgba(0, 86, 179, 0.4);
+    background: var(--id-gradient-secondary);
 }
 
 /* 모바일 월렛 버튼 */
@@ -728,5 +735,431 @@
     
     .id-stats-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* ==================== Card Body and Member Sections (T026-T030) ==================== */
+
+.card-body-enhanced {
+    padding: 24px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+/* Member Photo Section (T028) */
+.member-photo-section {
+    flex-shrink: 0;
+}
+
+.member-photo-enhanced {
+    width: 80px;
+    height: 100px;
+    border-radius: 8px;
+    border: 2px solid white;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Member Info Section with Flexbox (T026) */
+.member-info-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Responsive text sizing (T030) */
+.member-name-enhanced {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--krds-primary);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.member-details-enhanced {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Member detail items with icons (T029) */
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.detail-item i {
+    width: 16px;
+    text-align: center;
+    color: var(--krds-secondary);
+}
+
+/* Header components for new structure */
+.header-logo {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--krds-primary);
+    margin: 0 auto 12px;
+}
+
+.header-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.header-subtitle {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+}
+
+/* Committee section */
+.committee-section {
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--krds-primary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.committee-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* QR section (T045, T046, T047) */
+.qr-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    padding: 16px;
+}
+
+/* QR Code Canvas Styling (T045) */
+#qrcode {
+    width: 200px !important;
+    height: 200px !important;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 8px;
+}
+
+/* QR Code Label (T047) */
+.qr-label {
+    font-size: 14px;
+    color: var(--krds-primary);
+    opacity: 0.9;
+    margin-top: 12px;
+    font-weight: 500;
+}
+
+/* QR Error Styling (T048) */
+.qr-error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+    text-align: center;
+}
+
+.qr-error-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(220, 38, 38, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.qr-error-icon i {
+    font-size: 24px;
+    color: var(--krds-error);
+}
+
+.qr-error-message {
+    font-size: 14px;
+    color: #4b5563;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.qr-retry-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: var(--krds-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.qr-retry-button:hover {
+    background: var(--krds-secondary);
+}
+
+.qr-retry-button:active {
+    transform: scale(0.98);
+}
+
+/* DID info compact for card back */
+.did-info-compact {
+    margin-top: 16px;
+    padding: 12px;
+    background: rgba(0, 61, 122, 0.05);
+    border-radius: 8px;
+}
+
+.did-field-compact {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.did-field-compact i {
+    color: var(--krds-success);
+}
+
+.did-value-compact {
+    font-size: 10px;
+    font-family: 'Courier New', monospace;
+    color: #374151;
+    word-break: break-all;
+}
+
+.did-dates {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #6b7280;
+}
+
+/* Responsive adjustments (T030) */
+@media (max-width: 430px) {
+    .member-name-enhanced {
+        font-size: 20px;
+    }
+
+    .detail-item {
+        font-size: 12px;
+    }
+
+    .card-body-enhanced {
+        padding: 16px;
+        gap: 16px;
+    }
+
+    .member-photo-enhanced {
+        width: 70px;
+        height: 88px;
+    }
+}
+
+/* ==================== Accessibility - Reduced Motion (T024) ==================== */
+/* ==================== Blockchain Badge (T066-T068 - Phase 5) ==================== */
+
+.blockchain-badge-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+/* T066: Base blockchain badge styles */
+.blockchain-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.blockchain-badge i {
+    font-size: 14px;
+}
+
+.badge-text {
+    line-height: 1;
+}
+
+/* T067: Verified status (green accent) */
+.blockchain-badge.verified {
+    background: rgba(5, 150, 105, 0.2);
+    border-color: rgba(16, 185, 129, 0.4);
+}
+
+/* T068: Hover effect */
+.blockchain-badge.verified:hover {
+    background: rgba(5, 150, 105, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+.blockchain-badge.verified:active {
+    transform: translateY(0);
+}
+
+/* T064: Pending status (blue color) */
+.blockchain-badge.pending {
+    background: rgba(0, 86, 179, 0.2);
+    border-color: rgba(0, 86, 179, 0.4);
+    cursor: default;
+}
+
+.blockchain-badge.pending i {
+    animation: spin 1s linear infinite;
+}
+
+/* T065: Unavailable status (yellow color) */
+.blockchain-badge.unavailable {
+    background: rgba(217, 119, 6, 0.2);
+    border-color: rgba(217, 119, 6, 0.4);
+    cursor: default;
+}
+
+/* Spin animation for pending spinner */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==================== Verification Modal (T073-T074 - Phase 5) ==================== */
+
+.verification-modal-content {
+    text-align: center;
+    padding: 20px;
+}
+
+.verification-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.verification-icon .icon-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+.verification-icon .icon-circle i {
+    font-size: 32px;
+    color: white;
+}
+
+.verification-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--krds-primary);
+    margin-bottom: 24px;
+}
+
+/* T074: Details sections with labels and values */
+.verification-details {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+}
+
+.detail-section {
+    padding: 12px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.detail-section:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: #111827;
+    font-family: 'Courier New', monospace;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    /* Disable all animations and transitions for motion-sensitive users */
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    /* Specifically disable card flip animation */
+    .id-card-flipper {
+        transition: none !important;
+    }
+
+    /* Disable floating animations */
+    .id-card-header-enhanced::before,
+    .nfc-pulse-animation,
+    .blockchain-badge-glow {
+        animation: none !important;
+    }
+
+    /* Instant state changes instead of animated transitions */
+    .id-card-flipper.flipped {
+        transition: none;
     }
 }

@@ -60,8 +60,10 @@ window.app.loadInfoPage = function() {
                 <div class="profile-card-enhanced">
                     <div class="profile-main">
                         <div class="profile-photo-container">
-                            <img src="${memberData.photo || 'images/annomimus.jpg'}" 
-                                 alt="프로필 사진" class="profile-photo">
+                            <img src="${memberData.photo || 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(window.app.generateDefaultAvatar(memberData.name, memberData.partyColor))}"
+                                 alt="${memberData.name} 프로필 사진"
+                                 class="profile-photo"
+                                 onerror="this.outerHTML = window.app.generateDefaultAvatar('${memberData.name}', '${memberData.partyColor}')">
                             ${isEditMode ? '<button class="photo-edit-btn"><i class="fas fa-camera"></i></button>' : ''}
                         </div>
                         <div class="profile-basic">

@@ -1,0 +1,343 @@
+# Modal Lifecycle API Contract
+
+openapi: 3.0.0
+info:
+  title: Modal Lifecycle API
+  description: JavaScript API contract for enhanced modal system with duplicate prevention
+  version: 1.0.0
+  contact:
+    name: Dashboard Bug Fixes - 002
+    url: https://github.com/sang-woon/251031-mobile-ggc-member
+
+paths: {} # No HTTP endpoints - this is a client-side JavaScript API
+
+components:
+  schemas:
+    ModalOptions:
+      type: object
+      required:
+        - title
+        - content
+      properties:
+        title:
+          type: string
+          description: Modal header text in Korean
+          example: "보도자료"
+          minLength: 1
+          maxLength: 100
+        content:
+          type: string
+          description: Modal body HTML content
+          example: "<div class='space-y-4'>...</div>"
+          minLength: 1
+        actions:
+          type: string
+          description: Optional footer action buttons HTML
+          example: "<button onclick='window.app.closeModal()'>닫기</button>"
+        onClose:
+          type: string
+          description: Optional callback function name to execute on modal close
+          example: "handleModalClose"
+
+    ModalInstance:
+      type: object
+      required:
+        - id
+        - isOpen
+        - createdAt
+      properties:
+        id:
+          type: string
+          description: Unique modal identifier
+          example: "modal-1738368000000"
+          pattern: "^modal-[0-9]+$"
+        isOpen:
+          type: boolean
+          description: Current modal visibility state
+          example: true
+        createdAt:
+          type: integer
+          description: Unix timestamp of modal creation
+          example: 1738368000000
+        escapeHandler:
+          type: object
+          description: Reference to Escape key event handler function
+          nullable: true
+
+    ErrorResponse:
+      type: object
+      required:
+        - message
+        - code
+      properties:
+        message:
+          type: string
+          description: Korean error message for user display
+          example: "필수 모달 옵션 누락: title, content"
+        code:
+          type: string
+          description: Error code for programmatic handling
+          enum:
+            - INVALID_OPTIONS
+            - DUPLICATE_MODAL
+            - DEBOUNCE_ACTIVE
+            - CLEANUP_FAILED
+          example: "INVALID_OPTIONS"
+        context:
+          type: object
+          description: Additional error context for debugging
+          properties:
+            timestamp:
+              type: integer
+            functionName:
+              type: string
+            arguments:
+              type: object
+
+# JavaScript API Documentation
+
+x-javascript-api:
+  functions:
+    showModal:
+      summary: Create and display modal with duplicate prevention
+      description: |
+        Opens a new modal window with specified title and content.
+        Prevents duplicate modals through:
+        1. Existing modal check - closes previous modal before opening new one
+        2. Debouncing - ignores calls within 200ms of previous call
+        3. State tracking - maintains global currentModal reference
+      signature: "window.app.showModal(options: ModalOptions): void"
+      parameters:
+        - name: options
+          schema:
+            $ref: '#/components/schemas/ModalOptions'
+          required: true
+          description: Modal configuration object
+      returns:
+        type: void
+        description: No return value - modal is rendered to DOM
+      throws:
+        - type: Error
+          condition: "Missing required options (title, content)"
+          message: "필수 모달 옵션 누락"
+        - type: Error
+          condition: "Content contains dangerous HTML (script, iframe, javascript:)"
+          message: "위험한 HTML 콘텐츠 감지됨"
+      sideEffects:
+        - "Sets window.app.currentModal to new ModalInstance"
+        - "Sets window.app.modalDebounceTimeout for 200ms"
+        - "Inserts modal HTML into document.body"
+        - "Adds Escape key event listener to document"
+      example: |
+        window.app.showModal({
+          title: '보도자료',
+          content: '<div class="press-release">김영수 의원, 교육 정책 개선안 발표</div>',
+          actions: '<button onclick="window.app.closeModal()">닫기</button>'
+        });
+
+    closeModal:
+      summary: Close active modal with complete cleanup
+      description: |
+        Closes the currently open modal and performs complete cleanup:
+        1. Removes modal from DOM (with 300ms transition delay)
+        2. Removes Escape key event listener
+        3. Clears window.app.currentModal state
+      signature: "window.app.closeModal(): void"
+      parameters: []
+      returns:
+        type: void
+        description: No return value
+      sideEffects:
+        - "Removes modal element from DOM after 300ms transition"
+        - "Removes Escape key event listener"
+        - "Sets window.app.currentModal to null"
+      consoleOutput:
+        - level: log
+          message: "📋 Closing modal..."
+        - level: log
+          message: "✅ Modal removed from DOM"
+        - level: log
+          message: "✅ Modal closed completely"
+        - level: warn
+          message: "⚠️ No modal to close"
+          condition: "No active modal exists"
+      example: |
+        window.app.closeModal();
+
+    generateDefaultAvatar:
+      summary: Generate SVG avatar with member initials
+      description: |
+        Creates an inline SVG avatar with:
+        - Member's first 2 characters as initials
+        - Party-colored circular background (KRDS compliant)
+        - Proper ARIA labels for accessibility
+      signature: "window.app.generateDefaultAvatar(memberName: string, partyColor: string): string"
+      parameters:
+        - name: memberName
+          type: string
+          required: true
+          description: Full Korean name (minimum 2 characters)
+          example: "김영수"
+        - name: partyColor
+          type: string
+          required: false
+          description: Hex color code for background (defaults to #003d7a)
+          example: "#003d7a"
+          pattern: "^#[0-9A-Fa-f]{6}$"
+      returns:
+        type: string
+        description: SVG markup string
+        example: '<svg width="80" height="100"...>...</svg>'
+      throws:
+        - type: Error
+          condition: "memberName missing or < 2 characters"
+          message: "유효하지 않은 의원 이름"
+      consoleOutput:
+        - level: log
+          message: "🖼️ Generating default avatar for: 김영수"
+        - level: warn
+          message: "⚠️ 잘못된 색상 코드, 기본값 사용: invalidColor"
+          condition: "partyColor doesn't match hex pattern"
+      example: |
+        const avatarSVG = window.app.generateDefaultAvatar('김영수', '#003d7a');
+        memberPhotoElement.innerHTML = avatarSVG;
+
+# State Machine Specification
+
+x-state-machine:
+  states:
+    - name: Idle
+      description: No modal currently active
+      properties:
+        - window.app.currentModal === null
+        - window.app.modalDebounceTimeout === null
+      allowedTransitions:
+        - Opening (via showModal call)
+
+    - name: Opening
+      description: Modal creation and render in progress
+      properties:
+        - window.app.modalDebounceTimeout !== null
+        - DOM insertion in progress
+      allowedTransitions:
+        - Open (after DOM render complete)
+        - Idle (on error)
+      duration: "< 50ms"
+
+    - name: Open
+      description: Modal visible and interactive
+      properties:
+        - window.app.currentModal.isOpen === true
+        - Modal element exists in DOM
+        - Escape key handler registered
+      allowedTransitions:
+        - Closing (via closeModal, Escape, or backdrop click)
+      warnings:
+        - "Duplicate showModal calls are blocked - logs console.warn"
+
+    - name: Closing
+      description: Modal cleanup and removal in progress
+      properties:
+        - CSS transition removing 'mobile-modal-active' class
+        - Event listeners being removed
+      allowedTransitions:
+        - Idle (after cleanup complete)
+      duration: "300ms (CSS transition time)"
+
+  invariants:
+    - "At most ONE modal can exist in Open state at any time"
+    - "Debounce timeout is ALWAYS set when transitioning to Opening"
+    - "currentModal is ALWAYS null when in Idle state"
+    - "Escape handler is ALWAYS removed when transitioning to Idle"
+
+# Performance Characteristics
+
+x-performance:
+  showModal:
+    complexity: O(1)
+    domOperations: 1 insert
+    averageTime: "< 50ms"
+    maxTime: "< 100ms"
+
+  closeModal:
+    complexity: O(1)
+    domOperations: 1 remove (after 300ms transition)
+    averageTime: "< 10ms (excluding transition)"
+    maxTime: "< 20ms (excluding transition)"
+
+  debouncing:
+    cooldown: 200ms
+    purpose: "Prevent rapid-click duplicate modal spawning"
+    impact: "Blocks duplicate showModal calls within 200ms window"
+
+# Testing Contract
+
+x-testing:
+  unitTests:
+    - name: "showModal creates exactly one modal"
+      setup: "Call showModal with valid options"
+      assertion: "document.querySelectorAll('.mobile-modal-container').length === 1"
+
+    - name: "Duplicate showModal calls are blocked during debounce"
+      setup: "Call showModal twice within 100ms"
+      assertion: "Only one modal exists in DOM"
+
+    - name: "closeModal removes all modal elements"
+      setup: "showModal, then closeModal after 500ms"
+      assertion: "document.querySelectorAll('.mobile-modal-container').length === 0"
+
+    - name: "Escape key closes modal"
+      setup: "showModal, then press Escape"
+      assertion: "window.app.currentModal === null"
+
+  integrationTests:
+    - name: "Quick action buttons don't spawn duplicate modals"
+      setup: "Rapidly click '보도자료' button 5 times"
+      assertion: "Only one modal appears"
+
+    - name: "Opening new modal closes previous modal"
+      setup: "showModal for '보도자료', then showModal for '일정표'"
+      assertion: "Only '일정표' modal visible, '보도자료' modal removed"
+
+# Error Handling
+
+x-error-handling:
+  validation:
+    - check: "options.title and options.content exist"
+      onFailure: "Throw Error with Korean message"
+      recovery: "None - caller must provide valid options"
+
+    - check: "content doesn't contain dangerous HTML patterns"
+      onFailure: "Throw Error"
+      recovery: "Sanitize content or reject"
+
+  runtime:
+    - check: "Modal element exists before cleanup"
+      onFailure: "Log warning, continue cleanup"
+      recovery: "Graceful degradation - clear state anyway"
+
+    - check: "Debounce timeout can be set"
+      onFailure: "Log error, continue with modal creation"
+      recovery: "Modal still works, just no debounce protection"
+
+# Accessibility Contract
+
+x-accessibility:
+  keyboard:
+    - key: Escape
+      action: "Close modal"
+      requirement: "WCAG 2.1 AA keyboard navigation"
+
+  screenReader:
+    - element: "Modal title"
+      role: "heading level 3"
+      label: "Provided via options.title"
+
+    - element: "Modal content"
+      role: "dialog"
+      ariaLabel: "Dynamic content area"
+
+  focusManagement:
+    - onOpen: "Focus should move to modal (not implemented in current spec)"
+    - onClose: "Focus should return to trigger element (not implemented in current spec)"
+    - note: "Future enhancement opportunity"

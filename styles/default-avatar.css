@@ -1,0 +1,85 @@
+/**
+ * Default Avatar Styles
+ * Part of: 002-dashboard-bug-fixes (User Story 1 - Fix Missing Image Assets)
+ * Purpose: Responsive styles for generated SVG avatars with member initials
+ */
+
+/* Base default avatar styles */
+.default-avatar {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px; /* Rounded corners for modern look */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle elevation */
+}
+
+/* Ensure avatars fit within member photo containers */
+.member-photo .default-avatar,
+.profile-photo .default-avatar,
+img.default-avatar {
+  width: 80px;
+  height: 100px;
+  object-fit: cover;
+}
+
+/* Mobile breakpoint (320px-430px) */
+@media (max-width: 430px) {
+  .default-avatar {
+    max-width: 80px;
+    max-height: 100px;
+  }
+
+  /* Smaller avatars in compact layouts */
+  .compact .default-avatar,
+  .list-view .default-avatar {
+    width: 60px;
+    height: 75px;
+  }
+}
+
+/* Tablet breakpoint (768px) */
+@media (min-width: 768px) {
+  .default-avatar {
+    width: 100px;
+    height: 125px;
+  }
+}
+
+/* Desktop breakpoint (1024px+) */
+@media (min-width: 1024px) {
+  .default-avatar {
+    width: 120px;
+    height: 150px;
+  }
+}
+
+/* High DPI displays (Retina) */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .default-avatar {
+    /* SVG scales perfectly, no additional styles needed */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Accessibility: Ensure text remains visible during webfont load */
+.default-avatar text {
+  font-display: swap;
+}
+
+/* Print styles */
+@media print {
+  .default-avatar {
+    width: 80px;
+    height: 100px;
+    box-shadow: none; /* Remove shadows for print */
+  }
+}
+
+/* Dark mode support (if app implements dark mode in future) */
+@media (prefers-color-scheme: dark) {
+  .default-avatar {
+    box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+  }
+}

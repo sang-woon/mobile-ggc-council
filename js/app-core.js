@@ -3,15 +3,21 @@ window.app = {
     currentPage: 'home',
     isAuthenticated: true,
     authToken: 'temp_token_' + Date.now(),
+
+    // Modal state management (002-dashboard-bug-fixes US2)
+    currentModal: null,              // Track currently open modal to prevent duplicates
+    modalDebounceTimeout: null,      // Debounce timer to prevent rapid-click spawning
+    currentModalEscHandler: null,    // Store Escape key handler for proper cleanup (T021)
     memberData: {
         name: '김영수',
         party: '국민의힘',
+        partyColor: '#003d7a', // KRDS primary blue for 국민의힘
         district: '경기 수원시갑',
         memberId: '2024-0815',
         generation: '제11기',
         term: '초선',
         committees: ['교육위원회(위원장)', '예산결산특별위원회'],
-        photo: "images/annomimus.jpg",
+        photo: null, // Will use default avatar fallback (002-dashboard-bug-fixes)
         attendanceRate: {
             plenary: 98.5,
             standing: 96,
@@ -19,7 +25,20 @@ window.app = {
         },
         bills: 32,
         speeches: 15,
-        civilComplaints: 248
+        civilComplaints: 248,
+        // DID Credential Fields (T007 - Digital ID Feature)
+        didIdentifier: 'did:ggcouncil:2024-0815',
+        publicKey: '0x04a1b2c3d4e5f67890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890',
+        issuedDate: '2024-07-01T00:00:00+09:00',
+        expiresDate: '2028-06-30T23:59:59+09:00',
+        // Blockchain Verification Fields (T059-T060 - Phase 5)
+        blockchainVerification: {
+            status: 'verified',  // 'verified' | 'pending' | 'unavailable'
+            txHash: '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
+            blockNumber: 18234567,
+            verifiedAt: '2024-07-01T09:30:15+09:00',
+            didIdentifier: 'did:ggcouncil:2024-0815'
+        }
     },
     
     // Initialize Application
@@ -51,18 +70,55 @@ window.app = {
     checkAuth: function() {
         const token = localStorage.getItem('authToken');
         const isAuth = localStorage.getItem('isAuthenticated');
-        
+
         if (!token || isAuth !== 'true') {
             this.isAuthenticated = false;
             console.log('인증 실패 - 로그인 필요');
             return false;
         }
-        
+
         this.isAuthenticated = true;
         console.log('인증 성공');
         return true;
     },
-    
+
+    // Validate Member Data (T008 - Digital ID Feature)
+    validateMemberData: function() {
+        console.log('🔍 의원 데이터 유효성 검증 시작...');
+
+        // Required fields for basic functionality
+        const requiredFields = ['name', 'party', 'district', 'memberId', 'generation'];
+        const member = this.memberData || {};
+
+        // Check for missing required fields
+        const missingFields = requiredFields.filter(key => !member[key]);
+
+        if (missingFields.length > 0) {
+            console.error('❌ 필수 의원 정보 누락:', missingFields);
+            console.error('누락된 필드:', missingFields.join(', '));
+            return false;
+        }
+
+        // DID fields validation (optional but recommended for digital ID feature)
+        const didFields = ['didIdentifier', 'publicKey', 'issuedDate', 'expiresDate'];
+        const missingDidFields = didFields.filter(key => !member[key]);
+
+        if (missingDidFields.length > 0) {
+            console.warn('⚠️ DID 인증 정보 누락:', missingDidFields);
+            console.warn('디지털 신분증 기능이 제한될 수 있습니다.');
+        }
+
+        // Validate DID identifier format (if present)
+        if (member.didIdentifier && !member.didIdentifier.startsWith('did:ggcouncil:')) {
+            console.error('❌ DID 식별자 형식 오류:', member.didIdentifier);
+            console.error('올바른 형식: did:ggcouncil:{memberId}');
+            return false;
+        }
+
+        console.log('✅ 의원 데이터 유효성 검증 완료');
+        return true;
+    },
+
     // Setup Event Listeners
     setupEventListeners: function() {
         console.log('이벤트 리스너 설정 중...');

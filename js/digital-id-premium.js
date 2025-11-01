@@ -1,9 +1,9 @@
 // 프리미엄 파란색 디지털 신분증 디자인
 window.app.loadDigitalIdPremium = function() {
     const mainContent = document.getElementById('mainContent');
-    
-    // 의원 사진 (기본 이미지 또는 실제 사진)
-    const memberPhoto = app.memberData.photo || 'images/annomimus.jpg';
+
+    // 의원 사진 (기본 이미지 또는 실제 사진) - Use default avatar fallback (002-dashboard-bug-fixes)
+    const memberPhoto = app.memberData.photo || ('data:image/svg+xml;charset=utf-8,' + encodeURIComponent(window.app.generateDefaultAvatar(app.memberData.name, app.memberData.partyColor)));
     
     mainContent.innerHTML = `
         <style>
