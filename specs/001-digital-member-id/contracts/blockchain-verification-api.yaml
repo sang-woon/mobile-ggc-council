@@ -1,0 +1,372 @@
+openapi: 3.0.3
+info:
+  title: Blockchain DID Verification API
+  description: |
+    RESTful API for verifying Gyeonggi Provincial Council member DIDs on blockchain.
+    This API is used by the digital member ID card (Priority P3 feature) to display
+    blockchain verification status badges.
+    
+    **Scope**: This is a FUTURE API contract. The digital ID card feature (P1/P2) works
+    without this API using mock data. Backend team will implement this API as part of
+    broader blockchain infrastructure.
+    
+    **Security**: Public read-only endpoint, no authentication required for verification
+    queries. Write operations (DID registration) are admin-only and not exposed.
+  version: 1.0.0
+  contact:
+    name: Gyeonggi Provincial Council IT Team
+    url: https://council.gg.go.kr
+    email: it-support@council.gg.go.kr
+  license:
+    name: Internal Use Only
+    
+servers:
+  - url: https://api.council.gg.go.kr/v1
+    description: Production blockchain API server
+  - url: https://api-staging.council.gg.go.kr/v1
+    description: Staging environment for testing
+
+tags:
+  - name: verification
+    description: DID verification operations
+  - name: health
+    description: API health and status
+
+paths:
+  /did/{didIdentifier}/verification:
+    get:
+      tags:
+        - verification
+      summary: Get blockchain verification status for a DID
+      description: |
+        Retrieves blockchain verification information for a given DID identifier.
+        Returns transaction hash, block number, verification timestamp, and status.
+        
+        **Use Case**: Digital ID card (P3) calls this endpoint on page load to display
+        blockchain verification badge. Frontend gracefully handles unavailable state.
+      operationId: getVerificationStatus
+      parameters:
+        - name: didIdentifier
+          in: path
+          required: true
+          description: |
+            DID identifier in format `did:ggcouncil:{uuid}`.
+            Example: `did:ggcouncil:member-12345`
+          schema:
+            type: string
+            pattern: '^did:ggcouncil:[a-z0-9\-]+$'
+            example: 'did:ggcouncil:member-12345'
+      responses:
+        '200':
+          description: Verification status retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationResponse'
+              examples:
+                verified:
+                  summary: DID verified on blockchain
+                  value:
+                    status: verified
+                    didIdentifier: did:ggcouncil:member-12345
+                    txHash: '0x1a2b3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567890'
+                    blockNumber: 1523487
+                    verifiedAt: '2025-01-28T14:32:15+09:00'
+                    publicKey: '0x04a1b2c3d4e5f67890abcdef1234567890abcdef1234567890abcdef12345678'
+                    expiresAt: '2028-06-30T23:59:59+09:00'
+                pending:
+                  summary: Verification pending blockchain confirmation
+                  value:
+                    status: pending
+                    didIdentifier: did:ggcouncil:member-12345
+                    txHash: '0x9f8e7d6c5b4a3210fedcba0987654321fedcba0987654321fedcba0987654321'
+                    blockNumber: null
+                    verifiedAt: null
+                    publicKey: '0x04a1b2c3d4e5f67890abcdef1234567890abcdef1234567890abcdef12345678'
+                    expiresAt: '2028-06-30T23:59:59+09:00'
+        '404':
+          description: DID not found in blockchain registry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: DID_NOT_FOUND
+                message: 'DID identifier not found in blockchain registry'
+                didIdentifier: 'did:ggcouncil:invalid-member'
+                timestamp: '2025-01-31T16:45:30+09:00'
+        '400':
+          description: Invalid DID format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: INVALID_DID_FORMAT
+                message: 'DID identifier must match format did:ggcouncil:{id}'
+                didIdentifier: 'invalid-format'
+                timestamp: '2025-01-31T16:45:30+09:00'
+        '503':
+          description: Blockchain network unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: BLOCKCHAIN_UNAVAILABLE
+                message: 'Unable to connect to blockchain network. Please try again later.'
+                timestamp: '2025-01-31T16:45:30+09:00'
+                retryAfter: 60
+  
+  /did/verify-qr:
+    post:
+      tags:
+        - verification
+      summary: Verify DID via QR code scan
+      description: |
+        Validates a DID presented via QR code scan. External parties (building security,
+        event organizers) can use this endpoint to verify member identity.
+        
+        **Use Case**: QR code on digital ID card back encodes verification URL. Scanning
+        redirects to web page that calls this API to confirm authenticity.
+      operationId: verifyQRCode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - didIdentifier
+              properties:
+                didIdentifier:
+                  type: string
+                  pattern: '^did:ggcouncil:[a-z0-9\-]+$'
+                  example: 'did:ggcouncil:member-12345'
+                  description: DID identifier extracted from QR code
+                timestamp:
+                  type: string
+                  format: date-time
+                  example: '2025-01-31T16:45:30+09:00'
+                  description: Client timestamp of scan (optional, for audit logging)
+      responses:
+        '200':
+          description: DID verified successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  verified:
+                    type: boolean
+                    example: true
+                  memberName:
+                    type: string
+                    example: '홍길동'
+                    description: Member name (public information)
+                  position:
+                    type: string
+                    example: '경기도의원 (11대)'
+                    description: Official position
+                  district:
+                    type: string
+                    example: '수원시 장안구'
+                    description: Electoral district
+                  verificationTimestamp:
+                    type: string
+                    format: date-time
+                    example: '2025-01-31T16:45:32+09:00'
+        '404':
+          description: DID not found or revoked
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  
+  /health:
+    get:
+      tags:
+        - health
+      summary: API health check
+      description: Returns API and blockchain network health status
+      operationId: getHealth
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [healthy, degraded]
+                    example: healthy
+                  blockchain:
+                    type: object
+                    properties:
+                      connected:
+                        type: boolean
+                        example: true
+                      latestBlock:
+                        type: integer
+                        example: 1523500
+                      syncStatus:
+                        type: string
+                        enum: [synced, syncing, behind]
+                        example: synced
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: '2025-01-31T16:45:30+09:00'
+
+components:
+  schemas:
+    VerificationResponse:
+      type: object
+      required:
+        - status
+        - didIdentifier
+      properties:
+        status:
+          type: string
+          enum: [verified, pending, revoked]
+          description: |
+            Current verification status:
+            - verified: DID confirmed on blockchain with valid txHash
+            - pending: Transaction submitted but not yet confirmed
+            - revoked: DID has been permanently revoked (terminal state)
+          example: verified
+        didIdentifier:
+          type: string
+          pattern: '^did:ggcouncil:[a-z0-9\-]+$'
+          description: DID identifier
+          example: 'did:ggcouncil:member-12345'
+        txHash:
+          type: string
+          pattern: '^0x[0-9a-fA-F]{64}$'
+          description: Blockchain transaction hash (66 characters including 0x prefix)
+          example: '0x1a2b3c4d5e6f7890abcdef1234567890abcdef1234567890abcdef1234567890'
+          nullable: true
+        blockNumber:
+          type: integer
+          description: Block number containing DID registration transaction
+          example: 1523487
+          nullable: true
+        verifiedAt:
+          type: string
+          format: date-time
+          description: Timestamp when DID was verified on blockchain (ISO 8601 with timezone)
+          example: '2025-01-28T14:32:15+09:00'
+          nullable: true
+        publicKey:
+          type: string
+          pattern: '^0x[0-9a-fA-F]{64,}$'
+          description: Public key for signature verification (hex string)
+          example: '0x04a1b2c3d4e5f67890abcdef1234567890abcdef1234567890abcdef12345678'
+        expiresAt:
+          type: string
+          format: date-time
+          description: DID expiration timestamp (typically 4-year term)
+          example: '2028-06-30T23:59:59+09:00'
+    
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+        - timestamp
+      properties:
+        error:
+          type: string
+          enum: 
+            - DID_NOT_FOUND
+            - INVALID_DID_FORMAT
+            - BLOCKCHAIN_UNAVAILABLE
+            - INTERNAL_SERVER_ERROR
+          description: Machine-readable error code
+          example: DID_NOT_FOUND
+        message:
+          type: string
+          description: Human-readable error message in Korean
+          example: 'DID 식별자를 블록체인 원장에서 찾을 수 없습니다'
+        didIdentifier:
+          type: string
+          description: DID identifier that caused the error (if applicable)
+          example: 'did:ggcouncil:member-12345'
+          nullable: true
+        timestamp:
+          type: string
+          format: date-time
+          description: Error timestamp (ISO 8601 with timezone)
+          example: '2025-01-31T16:45:30+09:00'
+        retryAfter:
+          type: integer
+          description: Suggested retry delay in seconds (for 503 errors)
+          example: 60
+          nullable: true
+
+  securitySchemes: {}
+  
+security: []
+
+# Client Integration Examples
+x-code-samples:
+  - lang: JavaScript
+    label: Frontend fetch example
+    source: |
+      // In js/digital-id-enhanced.js
+      async function fetchBlockchainVerification(didIdentifier) {
+          try {
+              const response = await fetch(
+                  `https://api.council.gg.go.kr/v1/did/${didIdentifier}/verification`,
+                  {
+                      method: 'GET',
+                      headers: {
+                          'Accept': 'application/json'
+                      }
+                  }
+              );
+              
+              if (response.ok) {
+                  const verification = await response.json();
+                  app.updateMemberData({ blockchainVerification: verification });
+                  app.displayBlockchainBadge();
+                  console.log('✅ Blockchain verification loaded:', verification.status);
+              } else if (response.status === 404) {
+                  console.warn('⚠️ DID not found on blockchain');
+                  app.updateMemberData({ 
+                      blockchainVerification: { status: 'unavailable' } 
+                  });
+              } else if (response.status === 503) {
+                  console.error('❌ Blockchain network unavailable');
+                  app.updateMemberData({ 
+                      blockchainVerification: { status: 'unavailable' } 
+                  });
+              }
+          } catch (error) {
+              console.error('❌ Blockchain verification failed:', error);
+              // Graceful degradation: show unavailable state
+              app.updateMemberData({ 
+                  blockchainVerification: { status: 'unavailable' } 
+              });
+          }
+      }
+
+# Performance Requirements
+x-performance:
+  responseTime:
+    target: 200ms
+    max: 500ms
+  throughput:
+    target: 100 req/s
+    max: 500 req/s
+  availability:
+    target: 99.5%
+    note: Higher than typical due to critical identity verification
+
+# Rate Limiting
+x-rate-limit:
+  anonymous: 60 requests per minute
+  authenticated: 300 requests per minute
+  burstSize: 20 requests

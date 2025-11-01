@@ -78,7 +78,7 @@ window.app.loadMemberProfilePage = function() {
                         <!-- 사진 -->
                         <div style="display: flex; gap: 20px; align-items: start; padding: 16px; background: #f9fafb; border-radius: 8px;">
                             <div style="width: 120px; height: 150px; background: white; border: 2px solid #e5e7eb; border-radius: 8px; overflow: hidden;">
-                                <img src="${data.photo || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iI2U1ZTdlYiIvPgogIDxjaXJjbGUgY3g9IjYwIiBjeT0iNTAiIHI9IjI1IiBmaWxsPSIjOWNhM2FmIi8+CiAgPGVsbGlwc2UgY3g9IjYwIiBjeT0iMTEwIiByeD0iNDAiIHJ5PSI0MCIgZmlsbD0iIzljYTNhZiIvPgo8L3N2Zz4='}" 
+                                <img src="${data.photo || 'images/annomimus.jpg'}"
                                      alt="의원 사진" style="width: 100%; height: 100%; object-fit: cover;">
                             </div>
                             <div style="flex: 1;">

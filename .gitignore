@@ -1,0 +1,49 @@
+# 경기도의회 의정활동 관리시스템 - .gitignore
+# Static site (Vanilla JavaScript, no build process)
+
+# IDE / Editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.vs/
+
+# OS-Specific
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+*.swo
+*~
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment Variables (if added in future)
+.env
+.env.local
+.env.*.local
+
+# Temporary Files
+*.bak
+*.cache
+*.temp
+
+# Node modules (KRDS dependencies)
+node_modules/
+package-lock.json
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# MCP
+.playwright-mcp/
+
+# Optional: Project-specific exclusions
+# (Uncomment if needed)
+# /specs/drafts/
+# *.draft.md

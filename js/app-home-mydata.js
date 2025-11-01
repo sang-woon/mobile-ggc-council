@@ -39,7 +39,9 @@ window.app.loadHomePageWithMyData = function() {
                         <!-- 사진 -->
                         <div style="position: relative;">
                             <div class="photo-container photo-lg member-photo-circle" style="flex-shrink: 0; width: 120px; height: 120px;">
-                                <img src="${data.photo || 'images/annomimus.jpg'}" alt="${data.name} 의원">
+                                <img src="${data.photo || 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(window.app.generateDefaultAvatar(data.name, data.partyColor))}"
+                                     alt="${data.name} 의원"
+                                     onerror="this.outerHTML = window.app.generateDefaultAvatar('${data.name}', '${data.partyColor}')">
                                 ${privacy.photo ? '' : '<div style="position: absolute; inset: 0; background: rgba(0,0,0,0.7); border-radius: 50%; display: flex; align-items: center; justify-content: center;"><i class="fas fa-lock text-white"></i></div>'}
                             </div>
                             <button onclick="app.uploadProfilePhoto()" class="edit-only" style="display: none; position: absolute; bottom: 0; right: 0; width: 32px; height: 32px; background: #003d7a; color: white; border: none; border-radius: 50%; cursor: pointer;">

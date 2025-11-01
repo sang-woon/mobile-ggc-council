@@ -60,10 +60,13 @@ window.app.loadHomePageEnhanced = function() {
                 <div class="flex items-start gap-4" style="position: relative; z-index: 1;">
                     <!-- Enhanced Photo Container -->
                     <div class="relative" style="flex-shrink: 0;">
-                        <div class="member-photo-container" 
-                             onclick="app.showMemberDetails()" 
+                        <div class="member-photo-container"
+                             onclick="app.showMemberDetails()"
                              style="width: 85px; height: 85px; border-radius: 16px; overflow: hidden; cursor: pointer; position: relative; background: white; padding: 3px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-                            <img src="images/annomimus.jpg" alt="김영수 의원" style="width: 100%; height: 100%; object-fit: cover; border-radius: 13px;">
+                            <img src="${app.memberData.photo || 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(app.generateDefaultAvatar(app.memberData.name, app.memberData.partyColor))}"
+                                 alt="${app.memberData.name} 의원"
+                                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 13px;"
+                                 onerror="this.outerHTML = app.generateDefaultAvatar('${app.memberData.name}', '${app.memberData.partyColor}')">
                             <!-- Interactive Overlay -->
                             <div style="position: absolute; inset: 3px; background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.4) 100%); border-radius: 13px; opacity: 0; transition: opacity 0.2s;" 
                                  onmouseover="this.style.opacity='1'" 

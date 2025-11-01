@@ -244,46 +244,13 @@ Object.assign(window.app, {
         return colors[type] || 'gray';
     },
     
-    // 차트 초기화 (DataManager 데이터 사용)
+    // 차트 초기화 (002-dashboard-bug-fixes US4: Use enhanced configuration)
     initMonthlyChartWithData: function(data) {
-        const canvas = document.getElementById('monthlyChart');
-        if (canvas && window.Chart) {
-            new Chart(canvas, {
-                type: 'line',
-                data: {
-                    labels: data.labels,
-                    datasets: [{
-                        label: '활동 건수',
-                        data: data.data,
-                        borderColor: '#0056b3',
-                        backgroundColor: 'rgba(0, 86, 179, 0.1)',
-                        tension: 0.3,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                borderDash: [5, 5]
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
+        // T038: Replace with enhanced chart configuration from chart-config-enhanced.js
+        if (this.createMonthlyActivityChart) {
+            this.createMonthlyActivityChart('monthlyChart', data);
+        } else {
+            console.error('📊 Enhanced chart configuration not loaded. Check chart-config-enhanced.js');
         }
     },
     

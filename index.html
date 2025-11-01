@@ -38,8 +38,10 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <!-- QRCode.js for Digital ID -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <!-- QRCode.js for Digital ID (002-dashboard-bug-fixes US3: integrity removed to fix hash mismatch) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
     
     <!-- FullCalendar for Schedule -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
@@ -55,7 +57,9 @@
     <link rel="stylesheet" href="styles/dashboard-enhanced.css?v=2.3">
     <link rel="stylesheet" href="css/info-page.css?v=2.3">
     <link rel="stylesheet" href="css/member-card-enhanced.css?v=2.5">
-    <link rel="stylesheet" href="styles/digital-id-enhanced.css?v=2.4">
+    <link rel="stylesheet" href="styles/digital-id-enhanced.css?v=2.8">
+    <!-- 002-dashboard-bug-fixes: Default avatar styles -->
+    <link rel="stylesheet" href="styles/default-avatar.css?v=1.0">
     <!-- <link rel="stylesheet" href="styles/attendance-calendar.css?v=2.5"> -->
     <!-- <link rel="stylesheet" href="styles/calendar-fix.css?v=2.6"> -->
     <!-- <link rel="stylesheet" href="styles/calendar-complete-fix.css?v=3.0"> -->
@@ -770,6 +774,7 @@
     <script src="js/app-modals-enhanced.js?v=2.3.1"></script>
     <script src="js/app-modal-mobile-enhanced.js?v=1.0.0"></script>
     <script src="js/digital-id-enhanced.js?v=2.4"></script>
+    <script src="js/qr-code-generator.js?v=1.0"></script>
     <!-- <script src="js/attendance-calendar.js?v=2.5"></script> -->
     <!-- <script src="js/attendance-page-integrated.js?v=2.6"></script> -->
     <!-- <script src="js/attendance-calendar-fixed.js?v=3.0"></script> -->
@@ -779,7 +784,13 @@
     <link rel="stylesheet" href="styles/google-calendar-style.css?v=1.0.0">
     <!-- menu-fix.js 비활성화: app-core.js와 충돌 -->
     <!-- <script src="js/menu-fix.js"></script> -->
-    
+
+    <!-- 002-dashboard-bug-fixes: Default avatar utility -->
+    <script src="js/app-utils.js?v=1.0"></script>
+
+    <!-- 002-dashboard-bug-fixes US4: Enhanced Chart.js configuration with Korean labels -->
+    <script src="js/chart-config-enhanced.js?v=1.0"></script>
+
     <!-- 앱 초기화는 app-core.js에서 자동으로 처리됨 -->
 </body>
 </html>

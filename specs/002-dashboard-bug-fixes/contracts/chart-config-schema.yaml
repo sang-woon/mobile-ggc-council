@@ -1,0 +1,710 @@
+# Chart.js Configuration Contract
+
+openapi: 3.0.0
+info:
+  title: Chart.js Configuration API
+  description: Enhanced Chart.js configuration schema for Korean-localized data visualization with KRDS design compliance
+  version: 1.0.0
+  contact:
+    name: Dashboard Bug Fixes - 002
+    url: https://github.com/sang-woon/251031-mobile-ggc-member
+
+paths: {} # No HTTP endpoints - this is a client-side JavaScript configuration
+
+components:
+  schemas:
+    ChartConfiguration:
+      type: object
+      required:
+        - type
+        - data
+        - options
+      properties:
+        type:
+          type: string
+          description: Chart type (line, bar, pie, etc.)
+          enum:
+            - line
+            - bar
+            - pie
+            - doughnut
+            - radar
+            - polarArea
+          example: "line"
+        data:
+          $ref: '#/components/schemas/ChartData'
+        options:
+          $ref: '#/components/schemas/ChartOptions'
+
+    ChartData:
+      type: object
+      required:
+        - labels
+        - datasets
+      properties:
+        labels:
+          type: array
+          description: Korean month labels or other x-axis categories
+          items:
+            type: string
+          example: ["8월", "9월", "10월", "11월", "12월", "1월"]
+          minItems: 1
+          maxItems: 12
+        datasets:
+          type: array
+          description: Data series for chart visualization
+          items:
+            $ref: '#/components/schemas/ChartDataset'
+          minItems: 1
+          maxItems: 5
+
+    ChartDataset:
+      type: object
+      required:
+        - label
+        - data
+      properties:
+        label:
+          type: string
+          description: Dataset name in Korean
+          example: "월별 활동"
+          minLength: 1
+          maxLength: 50
+        data:
+          type: array
+          description: Numeric data points corresponding to labels
+          items:
+            type: number
+          example: [12, 19, 15, 22, 18, 25]
+        borderColor:
+          type: string
+          description: Line/border color (KRDS palette)
+          pattern: "^#[0-9A-Fa-f]{6}$"
+          example: "#0056b3"
+        backgroundColor:
+          type: string
+          description: Fill color with opacity (KRDS palette)
+          pattern: "^rgba\\(\\d{1,3}, \\d{1,3}, \\d{1,3}, [0-1]\\.[0-9]+\\)$"
+          example: "rgba(0, 86, 179, 0.1)"
+        tension:
+          type: number
+          description: Curve smoothness for line charts
+          minimum: 0.0
+          maximum: 1.0
+          example: 0.3
+        fill:
+          type: boolean
+          description: Whether to fill area under line
+          example: true
+        pointRadius:
+          type: number
+          description: Data point circle radius (px)
+          minimum: 0
+          maximum: 10
+          example: 4
+        pointHoverRadius:
+          type: number
+          description: Data point circle radius on hover (px)
+          minimum: 0
+          maximum: 15
+          example: 6
+
+    ChartOptions:
+      type: object
+      required:
+        - responsive
+        - maintainAspectRatio
+        - scales
+        - plugins
+      properties:
+        responsive:
+          type: boolean
+          description: Auto-resize chart on window resize
+          example: true
+        maintainAspectRatio:
+          type: boolean
+          description: Maintain aspect ratio during resize
+          example: true
+        scales:
+          $ref: '#/components/schemas/ChartScales'
+        plugins:
+          $ref: '#/components/schemas/ChartPlugins'
+
+    ChartScales:
+      type: object
+      required:
+        - y
+        - x
+      properties:
+        y:
+          $ref: '#/components/schemas/AxisConfiguration'
+        x:
+          $ref: '#/components/schemas/AxisConfiguration'
+
+    AxisConfiguration:
+      type: object
+      required:
+        - beginAtZero
+        - title
+        - ticks
+      properties:
+        beginAtZero:
+          type: boolean
+          description: Start y-axis at zero
+          example: true
+        title:
+          $ref: '#/components/schemas/AxisTitle'
+        ticks:
+          $ref: '#/components/schemas/AxisTicks'
+        grid:
+          $ref: '#/components/schemas/GridConfiguration'
+
+    AxisTitle:
+      type: object
+      required:
+        - display
+        - text
+        - font
+      properties:
+        display:
+          type: boolean
+          description: Show axis title
+          example: true
+        text:
+          type: string
+          description: Axis label text in Korean
+          example: "활동 수"
+          minLength: 1
+          maxLength: 20
+        font:
+          $ref: '#/components/schemas/FontConfiguration'
+        color:
+          type: string
+          description: Title text color (KRDS palette)
+          pattern: "^#[0-9A-Fa-f]{6}$"
+          example: "#333333"
+
+    AxisTicks:
+      type: object
+      required:
+        - font
+      properties:
+        font:
+          $ref: '#/components/schemas/FontConfiguration'
+        color:
+          type: string
+          description: Tick label color (KRDS palette)
+          pattern: "^#[0-9A-Fa-f]{6}$"
+          example: "#666666"
+        stepSize:
+          type: number
+          description: Spacing between ticks
+          minimum: 1
+          example: 5
+
+    GridConfiguration:
+      type: object
+      properties:
+        display:
+          type: boolean
+          description: Show grid lines
+          example: true
+        color:
+          type: string
+          description: Grid line color with opacity
+          pattern: "^rgba\\(\\d{1,3}, \\d{1,3}, \\d{1,3}, [0-1]\\.[0-9]+\\)$"
+          example: "rgba(0, 0, 0, 0.1)"
+        lineWidth:
+          type: number
+          description: Grid line width (px)
+          minimum: 0.5
+          maximum: 5
+          example: 1
+
+    FontConfiguration:
+      type: object
+      required:
+        - family
+        - size
+      properties:
+        family:
+          type: string
+          description: Font family (KRDS standard)
+          example: "Noto Sans KR"
+          enum:
+            - "Noto Sans KR"
+            - "sans-serif"
+        size:
+          type: number
+          description: Font size in pixels
+          minimum: 10
+          maximum: 24
+          example: 12
+        weight:
+          type: string
+          description: Font weight
+          enum:
+            - "300"
+            - "400"
+            - "500"
+            - "600"
+            - "700"
+          example: "400"
+        lineHeight:
+          type: number
+          description: Line height multiplier
+          minimum: 1.0
+          maximum: 2.0
+          example: 1.5
+
+    ChartPlugins:
+      type: object
+      required:
+        - tooltip
+        - legend
+      properties:
+        tooltip:
+          $ref: '#/components/schemas/TooltipConfiguration'
+        legend:
+          $ref: '#/components/schemas/LegendConfiguration'
+
+    TooltipConfiguration:
+      type: object
+      required:
+        - enabled
+        - callbacks
+        - titleFont
+        - bodyFont
+      properties:
+        enabled:
+          type: boolean
+          description: Enable tooltips on hover
+          example: true
+        callbacks:
+          $ref: '#/components/schemas/TooltipCallbacks'
+        titleFont:
+          $ref: '#/components/schemas/FontConfiguration'
+        bodyFont:
+          $ref: '#/components/schemas/FontConfiguration'
+        backgroundColor:
+          type: string
+          description: Tooltip background color with opacity
+          pattern: "^rgba\\(\\d{1,3}, \\d{1,3}, \\d{1,3}, [0-1]\\.[0-9]+\\)$"
+          example: "rgba(0, 0, 0, 0.8)"
+        titleColor:
+          type: string
+          description: Title text color
+          pattern: "^#[0-9A-Fa-f]{6}$"
+          example: "#FFFFFF"
+        bodyColor:
+          type: string
+          description: Body text color
+          pattern: "^#[0-9A-Fa-f]{6}$"
+          example: "#FFFFFF"
+        padding:
+          type: number
+          description: Tooltip padding (px)
+          minimum: 5
+          maximum: 20
+          example: 10
+        cornerRadius:
+          type: number
+          description: Tooltip border radius (px)
+          minimum: 0
+          maximum: 10
+          example: 4
+
+    TooltipCallbacks:
+      type: object
+      required:
+        - label
+      properties:
+        label:
+          type: string
+          description: JavaScript function definition for custom tooltip labels
+          example: "function(context) { return `활동: ${context.parsed.y}건`; }"
+
+    LegendConfiguration:
+      type: object
+      required:
+        - display
+        - position
+        - labels
+      properties:
+        display:
+          type: boolean
+          description: Show chart legend
+          example: true
+        position:
+          type: string
+          description: Legend position relative to chart
+          enum:
+            - top
+            - bottom
+            - left
+            - right
+          example: "top"
+        labels:
+          $ref: '#/components/schemas/LegendLabels'
+
+    LegendLabels:
+      type: object
+      required:
+        - font
+        - color
+      properties:
+        font:
+          $ref: '#/components/schemas/FontConfiguration'
+        color:
+          type: string
+          description: Legend text color (KRDS palette)
+          pattern: "^#[0-9A-Fa-f]{6}$"
+          example: "#333333"
+        padding:
+          type: number
+          description: Padding between legend items (px)
+          minimum: 5
+          maximum: 20
+          example: 10
+        usePointStyle:
+          type: boolean
+          description: Use point style instead of box for legend markers
+          example: false
+
+# JavaScript API Documentation
+
+x-javascript-api:
+  functions:
+    createMonthlyActivityChart:
+      summary: Create enhanced line chart for monthly activity tracking
+      description: |
+        Initializes a Chart.js line chart with Korean localization, KRDS design compliance,
+        and enhanced axis labels/tooltips. Designed for mobile-first responsive display.
+      signature: "window.app.createMonthlyActivityChart(canvasId: string, activityData: number[]): Chart"
+      parameters:
+        - name: canvasId
+          type: string
+          required: true
+          description: DOM ID of canvas element (without # prefix)
+          example: "monthlyActivityChart"
+        - name: activityData
+          type: array
+          required: true
+          description: Array of numeric activity counts for past 6 months
+          example: [12, 19, 15, 22, 18, 25]
+          minItems: 6
+          maxItems: 12
+      returns:
+        type: Chart
+        description: Chart.js instance for future updates/destruction
+      throws:
+        - type: Error
+          condition: "Canvas element not found in DOM"
+          message: "차트 캔버스를 찾을 수 없습니다"
+        - type: Error
+          condition: "Invalid data array (wrong length or non-numeric values)"
+          message: "유효하지 않은 활동 데이터"
+      sideEffects:
+        - "Creates Chart.js instance attached to canvas 2D context"
+        - "Registers resize event listeners for responsive behavior"
+        - "Applies KRDS color palette to chart elements"
+      consoleOutput:
+        - level: log
+          message: "📊 Creating monthly activity chart..."
+        - level: log
+          message: "✅ Chart rendered successfully"
+        - level: error
+          message: "❌ 차트 생성 실패: [error details]"
+          condition: "Chart creation fails"
+      example: |
+        const canvas = document.getElementById('monthlyActivityChart');
+        const activityData = [12, 19, 15, 22, 18, 25]; // Past 6 months
+        
+        const chart = window.app.createMonthlyActivityChart('monthlyActivityChart', activityData);
+
+    updateChart:
+      summary: Update existing chart with new data
+      description: |
+        Updates an existing Chart.js instance with new data points while preserving
+        configuration and animation settings.
+      signature: "window.app.updateChart(chartInstance: Chart, newData: number[]): void"
+      parameters:
+        - name: chartInstance
+          type: Chart
+          required: true
+          description: Existing Chart.js instance to update
+        - name: newData
+          type: array
+          required: true
+          description: New numeric data array matching original data length
+          example: [15, 20, 18, 25, 22, 28]
+      returns:
+        type: void
+      sideEffects:
+        - "Updates chart.data.datasets[0].data array"
+        - "Triggers chart.update() with animation"
+      consoleOutput:
+        - level: log
+          message: "📊 Updating chart data..."
+        - level: log
+          message: "✅ Chart updated"
+      example: |
+        window.app.updateChart(existingChart, [15, 20, 18, 25, 22, 28]);
+
+    destroyChart:
+      summary: Properly destroy chart instance and clean up resources
+      description: |
+        Destroys Chart.js instance, removes event listeners, and frees memory.
+        Call before removing canvas element from DOM.
+      signature: "window.app.destroyChart(chartInstance: Chart): void"
+      parameters:
+        - name: chartInstance
+          type: Chart
+          required: true
+          description: Chart.js instance to destroy
+      returns:
+        type: void
+      sideEffects:
+        - "Calls chart.destroy() to clean up Chart.js resources"
+        - "Removes resize event listeners"
+        - "Clears canvas 2D context"
+      consoleOutput:
+        - level: log
+          message: "📊 Destroying chart instance..."
+        - level: log
+          message: "✅ Chart destroyed"
+      example: |
+        window.app.destroyChart(existingChart);
+
+# Implementation Patterns
+
+x-implementation-patterns:
+  basic-line-chart:
+    description: "Standard monthly activity line chart with Korean labels"
+    code: |
+      window.app.createMonthlyActivityChart = function(canvasId, activityData) {
+        console.log('📊 Creating monthly activity chart...');
+        
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        
+        const chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['8월', '9월', '10월', '11월', '12월', '1월'],
+            datasets: [{
+              label: '월별 활동',
+              data: activityData,
+              borderColor: '#0056b3',
+              backgroundColor: 'rgba(0, 86, 179, 0.1)',
+              tension: 0.3,
+              fill: true,
+              pointRadius: 4,
+              pointHoverRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: '활동 수',
+                  font: {
+                    family: 'Noto Sans KR',
+                    size: 12,
+                    weight: '400'
+                  },
+                  color: '#333333'
+                },
+                ticks: {
+                  font: {
+                    family: 'Noto Sans KR',
+                    size: 12
+                  },
+                  color: '#666666'
+                },
+                grid: {
+                  color: 'rgba(0, 0, 0, 0.1)',
+                  lineWidth: 1
+                }
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: '월',
+                  font: {
+                    family: 'Noto Sans KR',
+                    size: 12,
+                    weight: '400'
+                  },
+                  color: '#333333'
+                },
+                ticks: {
+                  font: {
+                    family: 'Noto Sans KR',
+                    size: 12
+                  },
+                  color: '#666666'
+                },
+                grid: {
+                  display: false
+                }
+              }
+            },
+            plugins: {
+              tooltip: {
+                enabled: true,
+                callbacks: {
+                  label: function(context) {
+                    return `활동: ${context.parsed.y}건`;
+                  }
+                },
+                titleFont: {
+                  family: 'Noto Sans KR',
+                  size: 14,
+                  weight: '500'
+                },
+                bodyFont: {
+                  family: 'Noto Sans KR',
+                  size: 12
+                },
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                titleColor: '#FFFFFF',
+                bodyColor: '#FFFFFF',
+                padding: 10,
+                cornerRadius: 4
+              },
+              legend: {
+                display: true,
+                position: 'top',
+                labels: {
+                  font: {
+                    family: 'Noto Sans KR',
+                    size: 12
+                  },
+                  color: '#333333',
+                  padding: 10
+                }
+              }
+            }
+          }
+        });
+        
+        console.log('✅ Chart rendered successfully');
+        return chart;
+      };
+
+  responsive-chart:
+    description: "Mobile-optimized chart with adaptive font sizes"
+    code: |
+      // Detect viewport width and adjust font sizes
+      const isMobile = window.innerWidth < 768;
+      const fontSize = isMobile ? 10 : 12;
+      const titleFontSize = isMobile ? 12 : 14;
+      
+      // Use adaptive font sizes in configuration
+      options: {
+        scales: {
+          y: {
+            title: {
+              font: { family: 'Noto Sans KR', size: fontSize }
+            },
+            ticks: {
+              font: { family: 'Noto Sans KR', size: fontSize }
+            }
+          }
+        },
+        plugins: {
+          tooltip: {
+            titleFont: { family: 'Noto Sans KR', size: titleFontSize },
+            bodyFont: { family: 'Noto Sans KR', size: fontSize }
+          }
+        }
+      }
+
+# Performance Characteristics
+
+x-performance:
+  chart-creation:
+    complexity: "O(n) where n = number of data points"
+    domOperations: "1 canvas element, 1 Chart.js instance"
+    averageTime: "< 200ms for 6-12 data points"
+    maxTime: "< 500ms for complex datasets"
+    memoryUsage: "~50KB per chart instance"
+
+  chart-update:
+    complexity: "O(n) where n = number of data points"
+    domOperations: "0 new elements, canvas redraw only"
+    averageTime: "< 100ms with animation"
+    maxTime: "< 200ms"
+
+  chart-destruction:
+    complexity: "O(1)"
+    domOperations: "Remove event listeners, clear canvas"
+    averageTime: "< 10ms"
+    maxTime: "< 50ms"
+
+# Accessibility Compliance
+
+x-accessibility:
+  wcag-compliance:
+    level: "WCAG 2.1 AA"
+    requirements:
+      - "Text contrast ratio ≥ 4.5:1 for all labels"
+      - "Keyboard accessible tooltips (hover or focus)"
+      - "Screen reader friendly data table fallback"
+      - "Touch target size ≥ 44px for interactive elements"
+
+  aria-labels:
+    canvas:
+      role: "img"
+      ariaLabel: "월별 활동 통계 차트 - [dataset.label]"
+      ariaDescribedBy: "chart-description-text"
+
+  fallback-content:
+    description: "Provide data table alternative for screen readers"
+    implementation: |
+      <canvas id="monthlyActivityChart" role="img" aria-label="월별 활동 통계 차트">
+        <table>
+          <caption>월별 활동 통계</caption>
+          <thead>
+            <tr><th>월</th><th>활동 수</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>8월</td><td>12건</td></tr>
+            <!-- ... more rows ... -->
+          </tbody>
+        </table>
+      </canvas>
+
+# Testing Contract
+
+x-testing:
+  unitTests:
+    - name: "Chart creates with valid data"
+      setup: "Call createMonthlyActivityChart with 6 data points"
+      assertion: "Chart instance returned, canvas has chart context"
+
+    - name: "Chart throws error for missing canvas"
+      setup: "Call createMonthlyActivityChart with invalid canvas ID"
+      assertion: "Error thrown with Korean message"
+
+    - name: "Tooltip shows Korean formatted values"
+      setup: "Hover over data point"
+      assertion: "Tooltip displays '활동: X건' format"
+
+  integrationTests:
+    - name: "Chart responsive on viewport resize"
+      setup: "Create chart, resize window from 1024px to 430px"
+      assertion: "Chart redraws with adjusted dimensions, maintains aspect ratio"
+
+    - name: "Chart updates without recreation"
+      setup: "Create chart, call updateChart with new data"
+      assertion: "Data points change, animation plays, no memory leak"
+
+  visualRegressionTests:
+    - name: "Chart matches KRDS design system"
+      setup: "Render chart, capture screenshot"
+      assertion: "Colors match #0056b3, fonts are Noto Sans KR, spacing correct"

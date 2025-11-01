@@ -2,7 +2,34 @@
 Object.assign(window.app, {
     // Enhanced Modal Show Function
     showModalEnhanced: function(modalId, options = {}) {
-        // 기존 모달 제거
+        // 002-dashboard-bug-fixes US2: Prevent duplicate modal rendering with debouncing
+
+        // T019: Clear any pending modal spawning timeout
+        if (this.modalDebounceTimeout) {
+            clearTimeout(this.modalDebounceTimeout);
+            console.log('📋 Modal debounce: Cleared previous timeout');
+        }
+
+        // T019: Set 200ms debounce to prevent rapid-click duplicate spawning
+        this.modalDebounceTimeout = setTimeout(() => {
+            console.log('📋 Modal opening:', modalId);
+
+            // T018: Check if modal already exists - close it first
+            if (this.currentModal) {
+                console.log('📋 Modal exists: Closing current modal before opening new one');
+                this.closeModalEnhanced();
+            }
+
+            // T018: Track current modal ID
+            this.currentModal = modalId;
+
+            this._createModalDOM(modalId, options);
+        }, 200);
+    },
+
+    // Separate DOM creation logic for cleaner code
+    _createModalDOM: function(modalId, options = {}) {
+        // 기존 모달 제거 (defensive cleanup)
         this.closeModalEnhanced();
         
         // 모달 백드롭 생성
@@ -71,29 +98,72 @@ Object.assign(window.app, {
             }
         });
         
-        // ESC 키로 닫기
+        // ESC 키로 닫기 (T021: Store handler for proper cleanup)
         const escHandler = (e) => {
             if (e.key === 'Escape') {
                 this.closeModalEnhanced();
-                document.removeEventListener('keydown', escHandler);
             }
         };
+
+        // T021: Store Escape handler reference for later removal
+        this.currentModalEscHandler = escHandler;
         document.addEventListener('keydown', escHandler);
     },
-    
-    // Enhanced Modal Close Function
+
+    // Enhanced Modal Close Function (T020-T022: Complete cleanup)
     closeModalEnhanced: function() {
+        console.log('📋 Modal closing: Starting cleanup');
+
+        // T020: Remove ALL modal DOM elements completely
         const backdrop = document.getElementById('modal-backdrop');
         if (backdrop) {
             backdrop.remove();
+            console.log('📋 Modal cleanup: Removed modal-backdrop');
         }
-        // 기존 모달도 제거 (호환성)
+
+        // T020: Remove all legacy modal elements (for compatibility)
         const oldModal = document.getElementById('dynamic-modal');
         if (oldModal) {
             oldModal.remove();
+            console.log('📋 Modal cleanup: Removed legacy dynamic-modal');
         }
-        // 바디 스크롤 복원
+
+        // T020: Remove any .mobile-modal-container elements
+        const mobileModals = document.querySelectorAll('.mobile-modal-container');
+        if (mobileModals.length > 0) {
+            mobileModals.forEach(modal => modal.remove());
+            console.log(`📋 Modal cleanup: Removed ${mobileModals.length} mobile-modal-container(s)`);
+        }
+
+        // T020: Remove any .modal-overlay elements
+        const overlays = document.querySelectorAll('.modal-overlay');
+        if (overlays.length > 0) {
+            overlays.forEach(overlay => overlay.remove());
+            console.log(`📋 Modal cleanup: Removed ${overlays.length} modal-overlay(s)`);
+        }
+
+        // T021: Remove Escape key event listener to prevent memory leaks
+        if (this.currentModalEscHandler) {
+            document.removeEventListener('keydown', this.currentModalEscHandler);
+            this.currentModalEscHandler = null;
+            console.log('📋 Modal cleanup: Removed Escape key listener');
+        }
+
+        // T022: Clear currentModal state
+        if (this.currentModal) {
+            console.log('📋 Modal cleanup: Clearing currentModal state:', this.currentModal);
+            this.currentModal = null;
+        }
+
+        // Clear debounce timeout if exists
+        if (this.modalDebounceTimeout) {
+            clearTimeout(this.modalDebounceTimeout);
+            this.modalDebounceTimeout = null;
+        }
+
+        // Restore body scroll
         document.body.style.overflow = '';
+        console.log('📋 Modal cleanup: Complete');
     },
     
     // 출석 상세 모달 (개선된 디자인) - attendance-detail.js로 이동됨

@@ -7,11 +7,12 @@ window.DataManager = {
         name: '김영수',
         memberId: '2024-0815',
         party: '국민의힘',
+        partyColor: '#003d7a', // KRDS primary blue for 국민의힘
         district: '경기 수원시갑',
         position: '교육위원회 위원장',
         committees: ['교육위원회(위원장)', '예산결산특별위원회'],
         term: '초선(제11기)',
-        photo: 'images/annomimus.jpg',
+        photo: null, // Will use default avatar fallback (002-dashboard-bug-fixes)
         status: '재직중',
         electionInfo: {
             valid: true,

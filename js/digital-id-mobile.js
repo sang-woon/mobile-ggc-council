@@ -2,9 +2,9 @@
 window.app.loadDigitalIdMobileOptimized = function() {
     const mainContent = document.getElementById('mainContent');
     const memberData = app.memberData || {};
-    
-    // 기본 사진 처리
-    const memberPhoto = memberData.photo || 'images/annomimus.jpg';
+
+    // 기본 사진 처리 - Use default avatar fallback (002-dashboard-bug-fixes)
+    const memberPhoto = memberData.photo || ('data:image/svg+xml;charset=utf-8,' + encodeURIComponent(window.app.generateDefaultAvatar(memberData.name, memberData.partyColor)));
     
     mainContent.innerHTML = `
         <div class="digital-id-mobile-container">

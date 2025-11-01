@@ -549,7 +549,10 @@ Object.assign(window.app, {
                     
                     <div class="flex items-start space-x-4 mb-4">
                         <div class="w-24 h-30 rounded overflow-hidden border">
-                            <img src="images/annomimus.jpg" alt="김영수 의원" class="w-full h-full object-cover">
+                            <img src="${this.memberData.photo || 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(window.app.generateDefaultAvatar(this.memberData.name, this.memberData.partyColor))}"
+                                 alt="${this.memberData.name} 의원"
+                                 class="w-full h-full object-cover"
+                                 onerror="this.outerHTML = window.app.generateDefaultAvatar('${this.memberData.name}', '${this.memberData.partyColor}')">
                         </div>
                         <div class="flex-1">
                             <h4 class="font-bold text-lg mb-2">${this.memberData.name}</h4>

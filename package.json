@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "krds-uiux": "github:KRDS-uiux/krds-uiux"
+  }
+}
