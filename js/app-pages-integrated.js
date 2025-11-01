@@ -61,7 +61,7 @@ Object.assign(window.app, {
                             <div class="member-photo-container" 
                                  onclick="app.showMemberDetails()" 
                                  style="width: 85px; height: 85px; border-radius: 16px; overflow: hidden; cursor: pointer; position: relative; background: white; padding: 3px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-                                <img src="${memberInfo.photo}" alt="${memberInfo.name} 의원" style="width: 100%; height: 100%; object-fit: cover; border-radius: 13px;">
+                                <img src="${memberInfo.photo || 'images/annomimus.jpg'}" alt="${memberInfo.name} 의원" style="width: 100%; height: 100%; object-fit: cover; border-radius: 13px;">
                                 <!-- Interactive Overlay -->
                                 <div style="position: absolute; inset: 3px; background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.4) 100%); border-radius: 13px; opacity: 0; transition: opacity 0.2s;" 
                                      onmouseover="this.style.opacity='1'" 
