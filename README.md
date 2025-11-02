@@ -1,7 +1,7 @@
 # 경기도의회 의원 의정활동 관리시스템
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://sang-woon.github.io/ggc-member/)
+[![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://sang-woon.github.io/mobile-ggc-council/)
 
 > 모바일 최적화 의정활동 관리 플랫폼 with DID-based Digital Member ID Card
 
@@ -9,7 +9,7 @@
 
 ## 📱 Live Demo
 
-**🌐 [https://sang-woon.github.io/ggc-member/](https://sang-woon.github.io/ggc-member/)**
+**🌐 [https://sang-woon.github.io/mobile-ggc-council/](https://sang-woon.github.io/mobile-ggc-council/)**
 
 ## ✨ 주요 기능
 
@@ -80,8 +80,8 @@ Core:
 
 ```bash
 # 1. 프로젝트 다운로드
-git clone https://github.com/sang-woon/ggc-member.git
-cd ggc-member
+git clone https://github.com/sang-woon/mobile-ggc-council.git
+cd mobile-ggc-council
 
 # 2. 브라우저에서 열기
 # - Windows: index.html 더블 클릭
@@ -157,14 +157,14 @@ npx http-server -p 8000
 git init
 git add .
 git commit -m "feat: 경기도의회 의정활동 관리시스템"
-git remote add origin https://github.com/YOUR_USERNAME/ggc-member.git
+git remote add origin https://github.com/YOUR_USERNAME/mobile-ggc-council.git
 git push -u origin main
 
 # 2. GitHub 웹사이트 설정
 # Settings → Pages → Source: main branch → Save
 ```
 
-**배포 완료!** `https://YOUR_USERNAME.github.io/ggc-member/`
+**배포 완료!** `https://YOUR_USERNAME.github.io/mobile-ggc-council/`
 
 **장점:**
 - ✅ 완전 무료
@@ -206,10 +206,10 @@ netlify deploy --prod
 
 ```bash
 # 파일 업로드
-scp -r * user@server:/var/www/ggc-member/
+scp -r * user@server:/var/www/mobile-ggc-council/
 
 # nginx 설정
-sudo nano /etc/nginx/sites-available/ggc-member
+sudo nano /etc/nginx/sites-available/mobile-ggc-council
 ```
 
 **nginx 설정 예시:**
@@ -218,7 +218,7 @@ server {
     listen 80;
     server_name council.gg.go.kr;
 
-    root /var/www/ggc-member;
+    root /var/www/mobile-ggc-council;
     index index.html;
 
     location / {
@@ -245,8 +245,8 @@ CMD ["nginx", "-g", "daemon off;"]
 
 ```bash
 # 빌드 및 실행
-docker build -t ggc-member .
-docker run -d -p 80:80 ggc-member
+docker build -t mobile-ggc-council .
+docker run -d -p 80:80 mobile-ggc-council
 ```
 
 ## ⚙️ 환경 설정
@@ -550,7 +550,7 @@ chore: 빌드 업무 수정, 패키지 매니저 수정
 
 - **Email**: digital@gg.go.kr
 - **Website**: https://council.gg.go.kr
-- **Issues**: https://github.com/sang-woon/ggc-member/issues
+- **Issues**: https://github.com/sang-woon/mobile-ggc-council/issues
 
 ## 🙏 감사의 말
 
